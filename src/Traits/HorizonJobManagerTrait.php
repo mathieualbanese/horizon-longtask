@@ -58,7 +58,7 @@ trait HorizonJobManagerTrait
      */
     public function startJob(): void
     {
-        //Log::debug("START JOB : " . $this->job->getJobId() . ' KEY: ' . $this->getLockKeyName());
+        $this->logging('START JOB : ' . $this->job->getJobId() . ' KEY: ' . $this->getLockKeyName());
         $this->setLock();
         $this->setTime(time());
     }
@@ -70,7 +70,7 @@ trait HorizonJobManagerTrait
      */
     public function refreshLock(): void
     {
-        //Log::debug("Refresh LOCK : " . $this->job->getJobId() . ' KEY: ' . $this->getLockKeyName());
+        $this->logging('Refresh LOCK : ' . $this->job->getJobId() . ' KEY: ' . $this->getLockKeyName());
         $this->setLock();
     }
 
@@ -98,7 +98,6 @@ trait HorizonJobManagerTrait
      */
     public function isRunning(): bool
     {
-        //Log::debug("IS RUNNING : " . var_export($this->getLock(), true) . ' KEY: ' . $this->getLockKeyName());
         return !(($this->getLock()) === NULL);
     }
 
@@ -139,7 +138,7 @@ trait HorizonJobManagerTrait
     {
         if (time() - $this->getTime() > $this->getRefreshTime()) {
 
-            Log::debug('REFRESH JOB : ' . $this->job->getJobId());
+            $this->logging('REFRESH JOB : ' . $this->job->getJobId());
 
             $this->setTime(time());
 
@@ -201,5 +200,18 @@ trait HorizonJobManagerTrait
     public function getExpireAt(): int|float
     {
         return time() + ((int)config('queue.connections.redis.retry_after') * 1.5);
+    }
+
+    /**
+     * Logs a message if logging is enabled.
+     *
+     * @param string $message The message to log.
+     * @return void
+     */
+    private function logging($message)
+    {
+        if (config('horizon-longtask.enable_logging')) {
+            Log::debug($message);
+        }
     }
 }
