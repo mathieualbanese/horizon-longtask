@@ -1,6 +1,6 @@
 <?php
 
-namespace Initcore\LaravelAddon\Traits;
+namespace MathieuAlbanese\HorizonLongTask\Traits;
 
 use Illuminate\Contracts\Queue\Job;
 use Illuminate\Support\Facades\Log;
