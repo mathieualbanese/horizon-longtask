@@ -28,7 +28,5 @@
                 "MathieuAlbanese\\HorizonLongTask\\Providers\\HorizonLongTaskServiceProvider"
             ]
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
