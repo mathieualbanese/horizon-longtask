@@ -30,7 +30,7 @@ trait WorkerManagerTrait
      */
     public function setLockKeyName(string $key): void
     {
-        $this->key = config('laravel-addon.prefix_workers') . config('laravel-addon.redis_separator') . $key;
+        $this->key = config('horizon-longtask.prefix_workers') . config('horizon-longtask.redis_separator') . $key;
     }
 
     /**
@@ -106,7 +106,8 @@ trait WorkerManagerTrait
                 'pid' => getmypid(),
                 'hostname' => gethostname(),
                 'time' => time()
-            ]));
+            ]
+        ));
 
         Redis::expireAt($this->getLockKeyName(), $this->getExpireAt());
     }
@@ -142,7 +143,7 @@ trait WorkerManagerTrait
      */
     public function countWorkers(): int
     {
-        return count(Redis::keys(config('laravel-addon.prefix_workers') . config('laravel-addon.redis_separator') . '*'));
+        return count(Redis::keys(config('horizon-longtask.prefix_workers') . config('horizon-longtask.redis_separator') . '*'));
     }
 
     /**
@@ -152,7 +153,7 @@ trait WorkerManagerTrait
      */
     public function getAllWorkers(): array
     {
-        $keys = Redis::keys(config('laravel-addon.prefix_workers') . config('laravel-addon.redis_separator') . '*');
+        $keys = Redis::keys(config('horizon-longtask.prefix_workers') . config('horizon-longtask.redis_separator') . '*');
         //dd($workers);
         $workers = [];
         foreach ($keys as $key) {
@@ -219,5 +220,4 @@ trait WorkerManagerTrait
     {
         return time() + ((int)config('queue.connections.redis.retry_after') * 1.5);
     }
-
 }
