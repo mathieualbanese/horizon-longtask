@@ -139,7 +139,6 @@ trait HorizonJobManagerTrait
         if (time() - $this->getTime() > $this->getRefreshTime()) {
 
             $this->logging('REFRESH JOB : ' . $this->job->getJobId());
-
             $this->setTime(time());
 
             Redis::zRem('queues:' . $this->job->getQueue() . ':reserved', $this->job->getReservedJob());
